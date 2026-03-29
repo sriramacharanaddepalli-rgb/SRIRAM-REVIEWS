@@ -24,7 +24,7 @@ A professional-grade Single Page Application (SPA) designed to manage movie revi
 3. **Media Entry:** Using the `+` buttons within the Image or Video sections opens a secure modal for link input.
 
 ## 📖 About Sriram
-I am a B.Tech student and aspiring filmmaker. This site is my digital headquarters for scriptwriting projects like **Vihanga** and **The God Equation**, designed to bridge the gap between technical engineering and the creative world of Tollywood.
+I am Sriram a reviewer having good movie knowledge. This site is for the purpose of movie entertainment.
 
 ---
 *Created for the next generation of Indian Cinema.*
