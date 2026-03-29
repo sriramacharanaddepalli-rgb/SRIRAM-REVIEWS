@@ -3,58 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sriram Reviews | Cinema & News</title>
+    <title>Sriram Reviews | Cinema & Media</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <header class="main-header">
         <div class="container">
             <h1>SRIRAM REVIEWS</h1>
-            <p>The Ultimate Archive for Tollywood Fans</p>
+            <p>Director's Cut: Reviews, News & Media</p>
         </div>
     </header>
 
     <nav class="filter-nav">
         <div class="container">
-            <button onclick="filterContent('all')" class="btn-filter">
-                Show All Feed
-            </button>
-            <button onclick="filterContent('review')" class="btn-filter">
-                Movie Reviews
-            </button>
-            <button onclick="filterContent('news')" class="btn-filter">
-                Latest News
-            </button>
+            <button onclick="filterContent('all')" class="btn-filter">All Feed</button>
+            <button onclick="filterContent('review')" class="btn-filter">Reviews</button>
+            <button onclick="filterContent('news')" class="btn-filter">News</button>
+            <button onclick="filterContent('image')" class="btn-filter">Gallery</button>
+            <button onclick="filterContent('video')" class="btn-filter">Videos</button>
         </div>
     </nav>
 
     <main class="container">
         <section id="admin-panel">
             <div class="card-editor">
-                <h2>Create New Content</h2>
-                
+                <h2>Create New Post</h2>
                 <div class="input-group">
-                    <input type="text" id="post-title" placeholder="Enter Movie Title or News Headline...">
+                    <input type="text" id="post-title" placeholder="Movie Title or Headline">
                 </div>
-
-                <div class="input-group">
-                    <label for="post-category">Select Category:</label>
+                <div class="input-group flex-row">
                     <select id="post-category">
                         <option value="review">Movie Review</option>
                         <option value="news">Movie News</option>
                     </select>
+                    <input type="file" id="post-image" accept="image/*" style="width: 50%;">
                 </div>
-
                 <div class="input-group">
-                    <textarea id="post-content" placeholder="Write your full analysis or update here..."></textarea>
+                    <input type="text" id="post-video" placeholder="YouTube Video ID (e.g. dQw4w9WgXcQ)">
                 </div>
-                
-                <div class="action-row">
-                    <button id="publish-btn" onclick="savePost()">
-                        Publish to Archive
-                    </button>
+                <div class="input-group">
+                    <textarea id="post-content" placeholder="Write your analysis..."></textarea>
                 </div>
+                <button id="publish-btn" onclick="processAndSave()">Publish to Archive</button>
             </div>
         </section>
 
@@ -64,22 +54,18 @@
             <div class="section-title">
                 <h2 id="view-indicator">Current Feed: All</h2>
             </div>
-            
             <div id="display-list" class="grid-layout">
-                <p class="empty-msg">No posts found. Start writing above!</p>
-            </div>
+                </div>
         </section>
     </main>
 
     <footer class="site-footer">
         <div class="container">
-            <p>&copy; 2026 Sriram Reviews</p>
-            <p>B.Tech Student | Aspiring Filmmaker | Scriptwriter</p>
-            <p>Follow my YouTube: @SriramMovieReviews</p>
+            <p>&copy; 2026 Sriram Reviews | B.Tech Filmmaker</p>
+            <p>Portfolio: Vihanga | God Equation | Pancha Thathva</p>
         </div>
     </footer>
 
     <script src="script.js"></script>
-
 </body>
 </html>
