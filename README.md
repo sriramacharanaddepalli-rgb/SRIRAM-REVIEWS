@@ -1,69 +1,33 @@
-let currentType = '';
+# Sriram Reviews: Local Media Studio & Filmmaker's Archive 🎬
 
-function openMediaModal(type) {
-    currentType = type;
-    document.getElementById('media-modal').classList.remove('hidden');
-    document.getElementById('modal-title').innerText = `Add to ${type === 'video' ? 'Videos' : 'Images'}`;
-    
-    // Update file input to accept specific types
-    const input = document.getElementById('media-file');
-    input.accept = type === 'video' ? "video/mp4,video/webm" : "image/*";
-}
+A professional-grade Single Page Application (SPA) designed for film critics and scriptwriters. This platform serves as a high-performance digital portfolio, separating cinematic media discovery from deep-dive content creation.
 
-function closeModal() {
-    document.getElementById('media-modal').classList.add('hidden');
-    document.getElementById('media-file').value = '';
-}
+## 🌟 Key Features
 
-function saveMediaFile() {
-    const file = document.getElementById('media-file').files[0];
-    if (!file) return alert("Please select a file first.");
+- **Local Media Hosting (No External Links):**
+  - **Videos Section:** Supports direct upload of local video files (MP4, WebM) via a custom dialog box, played through an integrated HTML5 video engine.
+  - **Images Section:** A dedicated gallery for local poster uploads and high-resolution filmmaking stills.
+- **The White Workspace (Studio):**
+  - A high-contrast, distraction-free environment for drafting **Movie Reviews** and **Industry News**.
+  - **Integrated Writing Tools:** Built-in Bold, Italic, and Underline formatting.
+  - **Review Image Uplink:** Ability to attach a specific poster or image to each text-based post.
+- **Client-Side Media Database:** Engineered using the `FileReader` API and `LocalStorage` to process and store media as Base64 data, ensuring a fast, offline-capable experience.
 
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const data = {
-            id: Date.now(),
-            type: currentType,
-            content: e.target.result // Base64 Data
-        };
-        
-        let db = JSON.parse(localStorage.getItem('sriram_local_media')) || [];
-        db.push(data);
-        localStorage.setItem('sriram_local_media', JSON.stringify(db));
-        
-        closeModal();
-        renderHome();
-    };
-    reader.readAsDataURL(file);
-}
+## 🛠️ Technical Specifications
 
-function renderHome() {
-    const db = JSON.parse(localStorage.getItem('sriram_local_media')) || [];
-    const vGrid = document.getElementById('video-grid');
-    const iGrid = document.getElementById('image-grid');
+- **Architecture:** Single Page Application (SPA) with state-driven visibility.
+- **Frontend:** HTML5 (93-line optimized structure), CSS3 (Custom Variables, Flexbox, & Grid).
+- **Media Engine:** Asynchronous file processing for local video and image blobs.
+- **Persistence:** JSON-based local data management with individual entry deletion support.
 
-    vGrid.innerHTML = db.filter(m => m.type === 'video').map(m => `
-        <div class="card">
-            <video controls width="100%" style="border-radius:10px;">
-                <source src="${m.content}" type="video/mp4">
-            </video>
-            <button onclick="deleteMedia(${m.id})" class="del-small">Delete</button>
-        </div>
-    `).reverse().join('');
+## 📁 How To Use the Studio
 
-    iGrid.innerHTML = db.filter(m => m.type === 'image').map(m => `
-        <div class="card">
-            <img src="${m.content}" style="width:100%; border-radius:10px;">
-            <button onclick="deleteMedia(${m.id})" class="del-small">Delete</button>
-        </div>
-    `).reverse().join('');
-}
+1. **Home Media:** Click the `+` button in the **Videos** or **Images** sections. A dialog box will appear—choose a file from your device to upload it instantly to your home feed.
+2. **Writing Studio:** Click `Movie Reviews +` or `Movie News +` in the top navigation to enter the **White Workspace**.
+3. **Publishing:** Style your text using the toolbar, upload a specific image for your review, and click **Submit** to save your work.
 
-function deleteMedia(id) {
-    let db = JSON.parse(localStorage.getItem('sriram_local_media')) || [];
-    db = db.filter(m => m.id !== id);
-    localStorage.setItem('sriram_local_media', JSON.stringify(db));
-    renderHome();
-}
+## 📖 About the Developer
+I am **Sriram**, a B.Tech student and aspiring filmmaker. This portal is the digital headquarters for my filmmaking universes, including **Vihanga** and **The God Equation**. It represents the intersection of technical software logic and the creative storytelling of Tollywood.
 
-window.onload = renderHome;
+---
+*“Cinema is the most beautiful fraud in the world, and every fraud needs a solid foundation.”*
