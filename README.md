@@ -1,32 +1,69 @@
-# Sriram Reviews: Cinematic Studio & Content Management System 🎬
+let currentType = '';
 
-A sophisticated Single Page Application (SPA) designed for film critics and scriptwriters. This platform separates visual media discovery from deep-dive content creation, featuring a high-contrast writing environment with professional formatting and image-handling tools.
+function openMediaModal(type) {
+    currentType = type;
+    document.getElementById('media-modal').classList.remove('hidden');
+    document.getElementById('modal-title').innerText = `Add to ${type === 'video' ? 'Videos' : 'Images'}`;
+    
+    // Update file input to accept specific types
+    const input = document.getElementById('media-file');
+    input.accept = type === 'video' ? "video/mp4,video/webm" : "image/*";
+}
 
-## 🌟 Key Features
+function closeModal() {
+    document.getElementById('media-modal').classList.add('hidden');
+    document.getElementById('media-file').value = '';
+}
 
-- **Dual-Surface Architecture:**
-  - **The Dark Gallery (Home):** A cinematic, immersive hub focused on high-definition movie posters and YouTube video embeds.
-  - **The White Workspace (Studio):** A distraction-free, high-contrast environment triggered by the `+` buttons for drafting professional Movie Reviews and Industry News.
-- **Integrated Creator Tools:**
-  - **Text Styling:** Built-in Bold, Italic, and Underline formatting for script-style emphasis.
-  - **Dynamic Image Uplink:** Direct image-to-Base64 processing within the writer page to embed posters directly into reviews.
-  - **Universal Media Modal:** A unified dialog box on the Home Page for adding YouTube IDs or local image files.
-- **Client-Side Database:** Engineered using `LocalStorage` for persistent data management, allowing for a full CRUD (Create, Read, Update, Delete) experience without an external backend.
+function saveMediaFile() {
+    const file = document.getElementById('media-file').files[0];
+    if (!file) return alert("Please select a file first.");
 
-## 🛠️ Technical Specifications
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const data = {
+            id: Date.now(),
+            type: currentType,
+            content: e.target.result // Base64 Data
+        };
+        
+        let db = JSON.parse(localStorage.getItem('sriram_local_media')) || [];
+        db.push(data);
+        localStorage.setItem('sriram_local_media', JSON.stringify(db));
+        
+        closeModal();
+        renderHome();
+    };
+    reader.readAsDataURL(file);
+}
 
-- **Frontend:** HTML5 (93-line optimized), CSS3 (Custom Variables, Flexbox, & Grid).
-- **State Management:** Vanilla JavaScript (ES6) logic to handle page switching and real-time image previews.
-- **Media Engine:** Automatic YouTube ID parsing and asynchronous `FileReader` API for image processing.
+function renderHome() {
+    const db = JSON.parse(localStorage.getItem('sriram_local_media')) || [];
+    const vGrid = document.getElementById('video-grid');
+    const iGrid = document.getElementById('image-grid');
 
-## 📁 How To Use the Studio
+    vGrid.innerHTML = db.filter(m => m.type === 'video').map(m => `
+        <div class="card">
+            <video controls width="100%" style="border-radius:10px;">
+                <source src="${m.content}" type="video/mp4">
+            </video>
+            <button onclick="deleteMedia(${m.id})" class="del-small">Delete</button>
+        </div>
+    `).reverse().join('');
 
-1. **For Media:** Click the `+` button in the Video or Image sections on the Home Page to open the Dialog Box.
-2. **For Writing:** Click `Movie Reviews +` or `Movie News +` in the header to enter the **White Workspace**.
-3. **For Formatting:** Use the professional toolbar in the Workspace to style your text and upload specific posters for your articles.
+    iGrid.innerHTML = db.filter(m => m.type === 'image').map(m => `
+        <div class="card">
+            <img src="${m.content}" style="width:100%; border-radius:10px;">
+            <button onclick="deleteMedia(${m.id})" class="del-small">Delete</button>
+        </div>
+    `).reverse().join('');
+}
 
-## 📖 About the Developer
-I am **Sriram**, a B.Tech student and aspiring filmmaker. This portal is the digital home for my scriptwriting projects—**Vihanga**, **The God Equation**, and the **Pancha Thathva Universe**. It bridges the gap between technical engineering and the storytelling power of Tollywood.
+function deleteMedia(id) {
+    let db = JSON.parse(localStorage.getItem('sriram_local_media')) || [];
+    db = db.filter(m => m.id !== id);
+    localStorage.setItem('sriram_local_media', JSON.stringify(db));
+    renderHome();
+}
 
----
-*“Every great film starts with a great script. Every great script needs a home.”*
+window.onload = renderHome;
