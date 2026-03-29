@@ -1,32 +1,30 @@
-# Sriram Reviews: Cinematic Portal & Media Archive 🎬
+# Sriram Reviews: Filmmaker's Creative Studio & Media Archive 🎬
 
-A high-performance, single-page application (SPA) designed for film enthusiasts, critics, and storytellers. This platform serves as a digital bridge between technical web development and creative filmmaking.
+A professional-grade Single Page Application (SPA) designed to manage movie reviews, industry news, and media assets. This platform features a cinematic dark-mode gallery and a high-contrast white-mode writing workspace with integrated formatting tools.
 
 ## 🚀 Key Features
 
-- **Hybrid UI/UX:** - **Dark Mode Home:** A cinematic gallery for high-resolution images and embedded YouTube video reviews.
-  - **White Mode Reader:** A high-contrast, distraction-free reading environment for long-form movie reviews and industry news.
-- **Dynamic Content Management:** Integrated "Creator Studio" to publish reviews, news, and media directly from the browser.
-- **Client-Side Persistence:** Uses `LocalStorage` to manage a custom database without the need for an external backend, ensuring speed and privacy.
-- **Responsive Media:** Automatic scaling for YouTube embeds and Base64-encoded image processing.
+- **Dual-Interface Design:**
+  - **Cinematic Home:** A dark-themed hub focused exclusively on high-resolution image posters and embedded video content.
+  - **White Workspace:** A distraction-free environment for drafting Movie Reviews and News, accessible via the `+` action buttons.
+- **Integrated Writing Tools:** Built-in formatting tools (Bold, Italic, Underline) to style scripts and technical reviews.
+- **Dynamic Media Management:** Modal-based entry for YouTube video IDs and external image links.
+- **Zero-Backend Architecture:** Leverages Browser `LocalStorage` for persistent data management, ensuring all stories and reviews remain saved locally.
 
 ## 🛠️ Technical Stack
 
-- **Frontend:** Semantic HTML5 & Advanced CSS3 (Custom Variables, Flexbox, Grid).
-- **Logic:** Vanilla JavaScript (ES6+) for State Management and DOM Manipulation.
-- **Deployment:** Hosted via GitHub Pages with automated CI/CD workflows.
+- **Architecture:** Single Page Application (SPA) using state-driven DOM manipulation.
+- **Frontend:** HTML5 (93-line optimized), CSS3 (Custom Variables, Flexbox, & Grid).
+- **Logic:** Vanilla JavaScript (ES6) featuring `document.execCommand` for text styling and JSON-based data handling.
 
-## 📁 Project Structure
+## 📁 How It Works
 
-| File | Purpose |
-| :--- | :--- |
-| `index.html` | Core structure (93-line optimized) using a Single Page Architecture. |
-| `style.css` | Dual-theme styling (Cinematic Dark & Minimalist White). |
-| `script.js` | Database logic, image-to-data conversion, and category filtering. |
+1. **Home Page:** Displays only the Media Hub (Images & Videos).
+2. **Writing Mode:** Clicking `Movie Reviews +` or `Movie News +` triggers the White Workspace.
+3. **Media Entry:** Using the `+` buttons within the Image or Video sections opens a secure modal for link input.
 
-## 📖 About the Creator
-
-**Sriram** *B.Tech Student | Aspiring Filmmaker | Scriptwriter* This portal showcases my journey in the Telugu Film Industry (Tollywood) and technical engineering. It hosts my original script concepts like **Vihanga (Guardian of the Skies)** and **The God Equation**, alongside my YouTube content at **@SriramMovieReviews**.
+## 📖 About Sriram
+I am a B.Tech student and aspiring filmmaker. This site is my digital headquarters for scriptwriting projects like **Vihanga** and **The God Equation**, designed to bridge the gap between technical engineering and the creative world of Tollywood.
 
 ---
-*“Cinema is a matter of what's in the frame and what's out.”*
+*Created for the next generation of Indian Cinema.*
