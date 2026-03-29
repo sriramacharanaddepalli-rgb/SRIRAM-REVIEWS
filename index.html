@@ -19,13 +19,13 @@
         <main class="container">
             <section class="media-hub">
                 <div class="media-header">
-                    <h2>🎬 Videos & YouTube</h2>
+                    <h2>Videos</h2>
                     <button class="plus-btn" onclick="openMediaModal('video')">+</button>
                 </div>
                 <div id="video-grid" class="grid"></div>
 
                 <div class="media-header">
-                    <h2>📸 Images & Posters</h2>
+                    <h2>Images</h2>
                     <button class="plus-btn" onclick="openMediaModal('image')">+</button>
                 </div>
                 <div id="image-grid" class="grid"></div>
@@ -35,46 +35,20 @@
 
     <div id="media-modal" class="hidden modal-overlay">
         <div class="modal-box">
-            <h3 id="modal-title">Add Home Media</h3>
+            <h3 id="modal-title">Upload File</h3>
             <div class="modal-options">
-                <input type="text" id="media-url" placeholder="Paste YouTube Link or ID...">
-                <p style="margin: 10px 0; color: #666; font-size: 11px;">OR</p>
-                <input type="file" id="media-file" accept="image/*">
+                <label id="file-label" for="media-file">Choose Media File:</label>
+                <input type="file" id="media-file">
             </div>
             <div class="modal-btns">
-                <button class="save-btn" onclick="saveHomeMedia()">Save to Gallery</button>
+                <button class="save-btn" onclick="saveMediaFile()">Upload to Section</button>
                 <button class="cancel-btn" onclick="closeModal()">Cancel</button>
             </div>
         </div>
     </div>
 
     <div id="writer-page" class="hidden">
-        <nav class="white-nav">
-            <button onclick="closeWriter()" class="back-btn">← Back to Home</button>
-            <h2 id="writer-title">Drafting...</h2>
-        </nav>
-        
-        <div class="writer-container">
-            <div class="toolbar">
-                <div class="format-tools">
-                    <button onclick="format('bold')">B</button>
-                    <button onclick="format('italic')">I</button>
-                    <button onclick="format('underline')">U</button>
-                </div>
-                <div class="writer-image-tool">
-                    <label for="post-image-input" class="image-label">📷 Add Poster/Image</label>
-                    <input type="file" id="post-image-input" accept="image/*" onchange="previewPostImage()">
-                </div>
-            </div>
-
-            <div id="image-preview" class="image-preview-area hidden"></div>
-
-            <input type="text" id="post-title" placeholder="Review or News Title (e.g., Pushpa 2 Analysis)">
-            <textarea id="post-body" placeholder="Write your full review or news analysis here..."></textarea>
-            
-            <button class="submit-btn" onclick="submitPost()">Publish Post</button>
         </div>
-    </div>
 
     <script src="script.js"></script>
 </body>
