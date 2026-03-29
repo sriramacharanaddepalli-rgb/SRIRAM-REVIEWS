@@ -1,78 +1,76 @@
-// --- PUBLISHING LOGIC ---
-function handlePublish() {
-    const file = document.getElementById('img-input').files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => saveToDB(e.target.result);
-        reader.readAsDataURL(file);
-    } else {
-        saveToDB(null);
-    }
-}
-
-function saveToDB(imgData) {
-    const entry = {
-        id: Date.now(),
-        title: document.getElementById('title').value,
-        category: document.getElementById('category').value,
-        content: document.getElementById('content').value,
-        image: imgData,
-        date: new Date().toLocaleDateString()
-    };
-
-    if (!entry.title || !entry.content) return alert("Please fill title and content.");
-
-    let db = JSON.parse(localStorage.getItem('sriram_no_video_db')) || [];
-    db.push(entry);
-    localStorage.setItem('sriram_no_video_db', JSON.stringify(db));
-    location.reload();
-}
+let currentCategory = '';
+let currentMediaType = '';
 
 // --- NAVIGATION ---
-function openCategory(cat) {
-    document.getElementById('home-page').classList.add('hidden');
-    document.getElementById('white-page').classList.remove('hidden');
-    document.getElementById('page-title').innerText = cat === 'review' ? 'Movie Reviews' : 'Latest News';
-    renderCategory(cat);
+function openWriter(cat) {
+    currentCategory = cat;
+    document.getElementById('writer-page').classList.remove('hidden');
+    document.getElementById('writer-title').innerText = `Writing ${cat.toUpperCase()}...`;
 }
 
-function closeCategory() {
-    document.getElementById('white-page').classList.add('hidden');
-    document.getElementById('home-page').classList.remove('hidden');
+function closeWriter() {
+    document.getElementById('writer-page').classList.add('hidden');
+}
+
+// --- MEDIA MODAL ---
+function openMediaLink(type) {
+    currentMediaType = type;
+    document.getElementById('media-modal').classList.remove('hidden');
+    document.getElementById('modal-title').innerText = `Add ${type.toUpperCase()}`;
+}
+
+function closeMedia() {
+    document.getElementById('media-modal').classList.add('hidden');
+    document.getElementById('media-input').value = '';
+}
+
+// --- DATABASE & SUBMIT ---
+function submitPost() {
+    const title = document.getElementById('post-title').value;
+    const body = document.getElementById('post-body').value;
+
+    if(!title || !body) return alert("Please fill title and content.");
+
+    const post = { id: Date.now(), category: currentCategory, title, body, date: new Date().toLocaleDateString() };
+    let data = JSON.parse(localStorage.getItem('sriram_v4_posts')) || [];
+    data.push(post);
+    localStorage.setItem('sriram_v4_posts', JSON.stringify(data));
+    
+    alert("Post Published Successfully!");
+    closeWriter();
+}
+
+function saveMedia() {
+    const val = document.getElementById('media-input').value;
+    if(!val) return;
+
+    let media = JSON.parse(localStorage.getItem('sriram_v4_media')) || [];
+    media.push({ type: currentMediaType, link: val });
+    localStorage.setItem('sriram_v4_media', JSON.stringify(media));
+    
+    closeMedia();
+    loadHome();
 }
 
 // --- RENDERING ---
-function renderHomeMedia() {
-    const db = JSON.parse(localStorage.getItem('sriram_no_video_db')) || [];
+function loadHome() {
+    const media = JSON.parse(localStorage.getItem('sriram_v4_media')) || [];
+    const vGrid = document.getElementById('video-grid');
     const iGrid = document.getElementById('image-grid');
 
-    iGrid.innerHTML = db.filter(i => i.image).map(i => `
-        <div class="media-card">
-            <img src="${i.image}" alt="${i.title}">
-            <p>${i.title}</p>
-        </div>
-    `).reverse().join('') || '<p style="color:#444">No images uploaded yet.</p>';
+    vGrid.innerHTML = media.filter(m => m.type === 'video').map(m => `
+        <div class="card"><iframe src="https://www.youtube.com/embed/${m.link.split('v=')[1] || m.link}" frameborder="0"></iframe></div>
+    `).join('');
+
+    iGrid.innerHTML = media.filter(m => m.type === 'image').map(m => `
+        <div class="card"><img src="${m.link}"></div>
+    `).join('');
 }
 
-function renderCategory(cat) {
-    const db = JSON.parse(localStorage.getItem('sriram_no_video_db')) || [];
-    const container = document.getElementById('category-content');
-    
-    container.innerHTML = db.filter(i => i.category === cat).map(i => `
-        <div class="content-entry">
-            <small>${i.date}</small>
-            <h3>${i.title}</h3>
-            <p>${i.content.replace(/\n/g, '<br>')}</p>
-            <button onclick="deletePost(${i.id})" style="color:red; border:none; background:none; cursor:pointer;">[Delete Entry]</button>
-        </div>
-    `).reverse().join('') || '<p>No stories found in this category.</p>';
+// Basic Formatting Tool Simulation
+function format(cmd) {
+    document.execCommand(cmd, false, null);
+    document.getElementById('post-body').focus();
 }
 
-function deletePost(id) {
-    let db = JSON.parse(localStorage.getItem('sriram_no_video_db')) || [];
-    db = db.filter(i => i.id !== id);
-    localStorage.setItem('sriram_no_video_db', JSON.stringify(db));
-    location.reload();
-}
-
-window.onload = renderHomeMedia;
+window.onload = loadHome;
