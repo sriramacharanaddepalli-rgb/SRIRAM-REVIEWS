@@ -1,101 +1,73 @@
-let archive = JSON.parse(localStorage.getItem('sriram_vault_final')) || [];
-let activeCat = 'image';
+// Function to Save New Content
+function savePost() {
+    const title = document.getElementById('post-title').value;
+    const category = document.getElementById('post-category').value;
+    const content = document.getElementById('post-content').value;
 
-// --- DEEP SEARCH ---
-function executeSearch() {
-    const term = document.getElementById('globalSearch').value.toLowerCase();
-    const filtered = archive.filter(item => 
-        item.title.toLowerCase().includes(term) || 
-        item.content.toLowerCase().includes(term) ||
-        item.type.toLowerCase().includes(term)
-    );
-    renderWall(filtered);
-}
-
-// --- NAVIGATION ---
-function showSection(name) {
-    const sections = ['wall-section', 'reviews-section', 'news-section', 'about-section'];
-    sections.forEach(s => document.getElementById(s).style.display = 'none');
-    document.getElementById(name + '-section').style.display = 'block';
-    window.scrollTo(0,0);
-}
-
-// --- STUDIO LOGIC ---
-function openStudio(cat) {
-    activeCat = cat;
-    document.getElementById('writingStudio').style.display = 'block';
-    document.getElementById('studioTitle').value = "";
-    document.getElementById('editor').innerHTML = "Start writing...";
-}
-
-function closeStudio() { document.getElementById('writingStudio').style.display = 'none'; }
-
-function format(cmd) { document.execCommand(cmd, false, null); }
-
-function insertImage() { document.getElementById('imageUpload').click(); }
-
-document.getElementById('imageUpload').onchange = function(e) {
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-        document.execCommand('insertHTML', false, `<img src="${ev.target.result}" style="max-width:100%; border-radius:8px; margin:20px 0;">`);
-    };
-    reader.readAsDataURL(e.target.files[0]);
-};
-
-function promptVideo() {
-    const url = prompt("YouTube URL:");
-    if(url) {
-        const id = url.includes("v=") ? url.split("v=")[1].substring(0,11) : url;
-        const vid = `<div style="position:relative; padding-bottom:56.25%; height:0; margin:20px 0;"><iframe src="https://www.youtube.com/embed/${id}" style="position:absolute; top:0; left:0; width:100%; height:100%; border-radius:8px;" allowfullscreen></iframe></div>`;
-        document.execCommand('insertHTML', false, vid);
+    if (!title || !content) {
+        alert("Action Required: Please enter both title and content.");
+        return;
     }
-}
 
-// --- DATA PERSISTENCE ---
-function saveEntry() {
-    const title = document.getElementById('studioTitle').value;
-    const content = document.getElementById('editor').innerHTML;
-    if(!title || content.trim() === "") return;
+    const newEntry = {
+        id: Date.now(),
+        title,
+        category,
+        content,
+        date: new Date().toLocaleDateString()
+    };
 
-    const entry = { id: Date.now(), title, content, type: activeCat, date: new Date().toLocaleDateString() };
-    archive.unshift(entry);
-    localStorage.setItem('sriram_vault_final', JSON.stringify(archive));
+    let archive = JSON.parse(localStorage.getItem('sriram_v3_data')) || [];
+    archive.push(newEntry);
+    localStorage.setItem('sriram_v3_data', JSON.stringify(archive));
+
+    // Reset Form
+    document.getElementById('post-title').value = '';
+    document.getElementById('post-content').value = '';
     
-    closeStudio();
-    renderWall();
+    displayArchive('all');
 }
 
-function renderWall(data = archive) {
-    const grids = {
-        image: document.getElementById('imageGrid'),
-        video: document.getElementById('videoGrid'),
-        review: document.getElementById('reviewsGrid'),
-        news: document.getElementById('newsGrid')
-    };
+// Function to Filter the List
+function filterContent(type) {
+    const indicator = document.getElementById('view-indicator');
+    indicator.innerText = `Current Feed: ${type === 'all' ? 'All' : type.toUpperCase()}`;
+    displayArchive(type);
+}
 
-    Object.values(grids).forEach(g => { if(g) g.innerHTML = ''; });
+// Function to Render to UI
+function displayArchive(filter = 'all') {
+    const displayList = document.getElementById('display-list');
+    const archive = JSON.parse(localStorage.getItem('sriram_v3_data')) || [];
 
-    data.forEach(item => {
-        const card = `
-        <div class="review-card">
-            <span style="font-size:0.6rem; color:var(--primary); font-weight:bold; letter-spacing:1px; display:block; margin-bottom:5px;">${item.type.toUpperCase()}</span>
+    const filtered = filter === 'all' 
+        ? archive 
+        : archive.filter(item => item.category === filter);
+
+    if (filtered.length === 0) {
+        displayList.innerHTML = `<p style="text-align:center; color:#666;">No posts in this category yet.</p>`;
+        return;
+    }
+
+    displayList.innerHTML = filtered.map(item => `
+        <div class="post-card ${item.category}">
+            <span class="tag">${item.category}</span>
+            <small style="float:right; color:#777;">${item.date}</small>
             <h3>${item.title}</h3>
-            <p style="font-size:0.85rem; color:#bbb; line-height:1.5;">${item.content.replace(/<[^>]*>?/gm, '').substring(0, 120)}...</p>
-            <div style="display:flex; justify-content:space-between; margin-top:15px; font-size:0.75rem; color:#444;">
-                <span>${item.date}</span>
-                <button onclick="deleteItem(${item.id})" style="background:none; border:none; color:#444; cursor:pointer;">Delete</button>
-            </div>
-        </div>`;
-        if (grids[item.type]) grids[item.type].innerHTML += card;
-    });
+            <p>${item.content.replace(/\n/g, '<br>')}</p>
+            <button onclick="deletePost(${item.id})" style="background:none; border:none; color:#e50914; cursor:pointer; font-size:11px; padding:0;">[Delete Post]</button>
+        </div>
+    `).reverse().join('');
 }
 
-function deleteItem(id) {
-    if(confirm("Delete this entry?")) {
-        archive = archive.filter(a => a.id !== id);
-        localStorage.setItem('sriram_vault_final', JSON.stringify(archive));
-        renderWall();
+function deletePost(id) {
+    if(confirm("Are you sure you want to remove this?")){
+        let archive = JSON.parse(localStorage.getItem('sriram_v3_data')) || [];
+        archive = archive.filter(item => item.id !== id);
+        localStorage.setItem('sriram_v3_data', JSON.stringify(archive));
+        displayArchive();
     }
 }
 
-document.addEventListener('DOMContentLoaded', renderWall);
+// Initial Load
+window.onload = () => displayArchive('all');
