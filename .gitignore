@@ -1,0 +1,10 @@
+# OS generated files (Hidden system files)
+.DS_Store
+Thumbs.db
+
+# VS Code specific settings
+.vscode/
+
+# Local data (if you ever use them)
+node_modules/
+.env
