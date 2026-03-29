@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sriram Reviews | Filmmaker Portfolio</title>
+    <title>Sriram Reviews | Cinema Studio</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,18 +19,33 @@
         <main class="container">
             <section class="media-hub">
                 <div class="media-header">
-                    <h2>🎬 Videos</h2>
-                    <button class="plus-btn" onclick="openMediaLink('video')">+</button>
+                    <h2>🎬 Videos & YouTube</h2>
+                    <button class="plus-btn" onclick="openMediaModal('video')">+</button>
                 </div>
                 <div id="video-grid" class="grid"></div>
 
                 <div class="media-header">
-                    <h2>📸 Images</h2>
-                    <button class="plus-btn" onclick="openMediaLink('image')">+</button>
+                    <h2>📸 Images & Posters</h2>
+                    <button class="plus-btn" onclick="openMediaModal('image')">+</button>
                 </div>
                 <div id="image-grid" class="grid"></div>
             </section>
         </main>
+    </div>
+
+    <div id="media-modal" class="hidden">
+        <div class="modal-box">
+            <h3 id="modal-title">Add Media</h3>
+            <div class="modal-options">
+                <input type="text" id="media-url" placeholder="Paste Link or YouTube ID here...">
+                <p>OR</p>
+                <input type="file" id="media-file" accept="image/*">
+            </div>
+            <div class="modal-btns">
+                <button class="save-btn" onclick="saveMedia()">Save to Home</button>
+                <button class="cancel-btn" onclick="closeMedia()">Cancel</button>
+            </div>
+        </div>
     </div>
 
     <div id="writer-page" class="hidden">
@@ -42,22 +57,10 @@
             <div class="toolbar">
                 <button onclick="format('bold')">B</button>
                 <button onclick="format('italic')">I</button>
-                <button onclick="format('underline')">U</button>
             </div>
-            <input type="text" id="post-title" placeholder="Enter Title Here...">
-            <textarea id="post-body" placeholder="Start writing your script or review analysis..."></textarea>
-            <button class="submit-btn" onclick="submitPost()">Submit Post</button>
-        </div>
-    </div>
-
-    <div id="media-modal" class="hidden">
-        <div class="modal-box">
-            <h3 id="modal-title">Add Media</h3>
-            <input type="text" id="media-input" placeholder="Enter YouTube Link or Image URL">
-            <div class="modal-btns">
-                <button onclick="saveMedia()">Save</button>
-                <button onclick="closeMedia()">Cancel</button>
-            </div>
+            <input type="text" id="post-title" placeholder="Post Title">
+            <textarea id="post-body" placeholder="Start writing..."></textarea>
+            <button class="submit-btn" onclick="submitPost()">Submit</button>
         </div>
     </div>
 
