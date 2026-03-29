@@ -3,92 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sriram Reviews | Cinema Archive</title>
+    <title>Sriram Reviews | Cinema & News</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="spotlight"></div>
+    <header class="main-header">
+        <div class="container">
+            <h1>SRIRAM REVIEWS</h1>
+            <p>The Ultimate Archive for Tollywood Fans</p>
+        </div>
+    </header>
 
-    <nav class="navbar">
-        <div class="logo" onclick="showSection('wall')">SRIRAM<span>REVIEWS</span></div>
-        <div class="menu">
-            <div class="search-wrapper">
-                <input type="text" id="globalSearch" placeholder="Search archive..." onkeyup="executeSearch()">
-            </div>
-            <a href="#" onclick="showSection('wall')">Archive</a>
-            <a href="#" onclick="showSection('reviews')">Reviews</a>
-            <a href="#" onclick="showSection('news')">Movie News</a>
-            <a href="#" onclick="showSection('about')">The Owner</a>
+    <nav class="filter-nav">
+        <div class="container">
+            <button onclick="filterContent('all')" class="btn-filter">
+                Show All Feed
+            </button>
+            <button onclick="filterContent('review')" class="btn-filter">
+                Movie Reviews
+            </button>
+            <button onclick="filterContent('news')" class="btn-filter">
+                Latest News
+            </button>
         </div>
     </nav>
 
-    <main id="main-container">
-        <div id="wall-section">
-            <section class="gallery-block">
-                <div class="block-header"><h2>IMAGES</h2><button class="add-mini-btn" onclick="openStudio('image')">+</button></div>
-                <div id="imageGrid" class="review-grid"></div>
-            </section>
-            <section class="gallery-block">
-                <div class="block-header"><h2>VIDEOS</h2><button class="add-mini-btn" onclick="openStudio('video')">+</button></div>
-                <div id="videoGrid" class="review-grid"></div>
-            </section>
-        </div>
-
-        <div id="reviews-section" style="display:none;">
-            <section class="gallery-block">
-                <div class="block-header"><h2>FILM REVIEWS</h2><button class="add-mini-btn" onclick="openStudio('review')">+</button></div>
-                <div id="reviewsGrid" class="review-grid"></div>
-            </section>
-        </div>
-
-        <div id="news-section" style="display:none;">
-            <section class="gallery-block">
-                <div class="block-header"><h2>LATEST MOVIE NEWS</h2><button class="add-mini-btn" onclick="openStudio('news')">+</button></div>
-                <div id="newsGrid" class="review-grid"></div>
-            </section>
-        </div>
-
-        <section id="about-section" style="display:none;">
-            <div class="about-card glass">
-                <div class="about-grid">
-                    <div class="about-text">
-                        <span class="badge">Professional Reviewer</span>
-                        <h1>SRIRAM</h1>
-                        <p>A dedicated <b>Review Writer</b> and creator of <b>Sriram Reviews</b>. I provide in-depth cinematic analysis, focusing on <b>Tollywood</b> screenplay structure, directorial execution, and technical filmmaking.</p>
-                        <div class="bio-tags">
-                            <span>#ReviewWriter</span>
-                            <span>#CinemaAnalyst</span>
-                            <span>#YouTubeCreator</span>
-                        </div>
-                    </div>
-                    <div class="profile-placeholder">SR</div>
+    <main class="container">
+        <section id="admin-panel">
+            <div class="card-editor">
+                <h2>Create New Content</h2>
+                
+                <div class="input-group">
+                    <input type="text" id="post-title" placeholder="Enter Movie Title or News Headline...">
                 </div>
+
+                <div class="input-group">
+                    <label for="post-category">Select Category:</label>
+                    <select id="post-category">
+                        <option value="review">Movie Review</option>
+                        <option value="news">Movie News</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <textarea id="post-content" placeholder="Write your full analysis or update here..."></textarea>
+                </div>
+                
+                <div class="action-row">
+                    <button id="publish-btn" onclick="savePost()">
+                        Publish to Archive
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <section id="content-display">
+            <div class="section-title">
+                <h2 id="view-indicator">Current Feed: All</h2>
+            </div>
+            
+            <div id="display-list" class="grid-layout">
+                <p class="empty-msg">No posts found. Start writing above!</p>
             </div>
         </section>
     </main>
 
-    <div id="writingStudio" class="studio-overlay" style="display:none;">
-        <div class="editor-nav">
-            <button onclick="closeStudio()">← Back</button>
-            <button class="publish-btn" onclick="saveEntry()">Publish</button>
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Sriram Reviews</p>
+            <p>B.Tech Student | Aspiring Filmmaker | Scriptwriter</p>
+            <p>Follow my YouTube: @SriramMovieReviews</p>
         </div>
-        <div class="paper-container">
-            <div class="paper">
-                <input type="text" id="studioTitle" placeholder="TITLE..." class="paper-header">
-                <div class="studio-tools">
-                    <button onclick="format('bold')">B</button>
-                    <button onclick="format('italic')">I</button>
-                    <button onclick="insertImage()">🖼️ Image</button>
-                    <button onclick="promptVideo()">🎥 Video</button>
-                </div>
-                <div id="editor" contenteditable="true" class="paper-body">Start writing...</div>
-                <input type="file" id="imageUpload" style="display:none" accept="image/*">
-            </div>
-        </div>
-    </div>
+    </footer>
 
     <script src="script.js"></script>
+
 </body>
 </html>
