@@ -3,68 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sriram Reviews | Cinema & Media</title>
+    <title>Sriram Reviews | Director's Portal</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="main-header">
-        <div class="container">
+    <div id="home-page">
+        <header class="main-header">
             <h1>SRIRAM REVIEWS</h1>
-            <p>Director's Cut: Reviews, News & Media</p>
-        </div>
-    </header>
+            <nav class="main-nav">
+                <button onclick="openCategory('review')">Movie Reviews</button>
+                <button onclick="openCategory('news')">Industry News</button>
+            </nav>
+        </header>
 
-    <nav class="filter-nav">
+        <main class="container">
+            <section id="media-hub">
+                <div class="media-section">
+                    <h2>🎬 Video Gallery</h2>
+                    <div id="video-grid" class="grid"></div>
+                </div>
+                <div class="media-section">
+                    <h2>📸 Image Gallery</h2>
+                    <div id="image-grid" class="grid"></div>
+                </div>
+            </section>
+
+            <section class="admin-panel">
+                <h3>Creator Studio</h3>
+                <input type="text" id="title" placeholder="Title">
+                <select id="category">
+                    <option value="review">Review</option>
+                    <option value="news">News</option>
+                </select>
+                <input type="file" id="img-input" accept="image/*">
+                <input type="text" id="vid-input" placeholder="YouTube Video ID">
+                <textarea id="content" placeholder="Story/Review content..."></textarea>
+                <button onclick="handlePublish()">Publish Now</button>
+            </section>
+        </main>
+    </div>
+
+    <div id="white-page" class="hidden">
+        <nav class="white-nav">
+            <button onclick="closeCategory()" class="back-btn">← Back to Home</button>
+            <h2 id="page-title">Category Name</h2>
+        </nav>
         <div class="container">
-            <button onclick="filterContent('all')" class="btn-filter">All Feed</button>
-            <button onclick="filterContent('review')" class="btn-filter">Reviews</button>
-            <button onclick="filterContent('news')" class="btn-filter">News</button>
-            <button onclick="filterContent('image')" class="btn-filter">Gallery</button>
-            <button onclick="filterContent('video')" class="btn-filter">Videos</button>
+            <div id="category-content"></div>
         </div>
-    </nav>
-
-    <main class="container">
-        <section id="admin-panel">
-            <div class="card-editor">
-                <h2>Create New Post</h2>
-                <div class="input-group">
-                    <input type="text" id="post-title" placeholder="Movie Title or Headline">
-                </div>
-                <div class="input-group flex-row">
-                    <select id="post-category">
-                        <option value="review">Movie Review</option>
-                        <option value="news">Movie News</option>
-                    </select>
-                    <input type="file" id="post-image" accept="image/*" style="width: 50%;">
-                </div>
-                <div class="input-group">
-                    <input type="text" id="post-video" placeholder="YouTube Video ID (e.g. dQw4w9WgXcQ)">
-                </div>
-                <div class="input-group">
-                    <textarea id="post-content" placeholder="Write your analysis..."></textarea>
-                </div>
-                <button id="publish-btn" onclick="processAndSave()">Publish to Archive</button>
-            </div>
-        </section>
-
-        <hr class="divider">
-
-        <section id="content-display">
-            <div class="section-title">
-                <h2 id="view-indicator">Current Feed: All</h2>
-            </div>
-            <div id="display-list" class="grid-layout">
-                </div>
-        </section>
-    </main>
-
-    <footer class="site-footer">
-        <div class="container">
-            <p>&copy; 2026 Sriram Reviews | B.Tech Filmmaker</p>
-            <p>Portfolio: Vihanga | God Equation | Pancha Thathva</p>
-        </div>
-    </footer>
+    </div>
 
     <script src="script.js"></script>
 </body>
