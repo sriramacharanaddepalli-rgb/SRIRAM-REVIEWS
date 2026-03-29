@@ -1,73 +1,75 @@
-// Function to Save New Content
-function savePost() {
+// Convert Image to Base64 to save in LocalStorage
+function processAndSave() {
+    const file = document.getElementById('post-image').files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            savePost(e.target.result);
+        };
+        reader.readAsDataURL(file);
+    } else {
+        savePost(null);
+    }
+}
+
+function savePost(imageData) {
     const title = document.getElementById('post-title').value;
     const category = document.getElementById('post-category').value;
+    const videoId = document.getElementById('post-video').value;
     const content = document.getElementById('post-content').value;
 
-    if (!title || !content) {
-        alert("Action Required: Please enter both title and content.");
-        return;
-    }
+    if (!title || !content) return alert("Please fill title and content.");
 
     const newEntry = {
         id: Date.now(),
         title,
         category,
         content,
+        image: imageData,
+        video: videoId,
         date: new Date().toLocaleDateString()
     };
 
-    let archive = JSON.parse(localStorage.getItem('sriram_v3_data')) || [];
+    let archive = JSON.parse(localStorage.getItem('sriram_media_db')) || [];
     archive.push(newEntry);
-    localStorage.setItem('sriram_v3_data', JSON.stringify(archive));
-
-    // Reset Form
-    document.getElementById('post-title').value = '';
-    document.getElementById('post-content').value = '';
+    localStorage.setItem('sriram_media_db', JSON.stringify(archive));
     
-    displayArchive('all');
+    location.reload(); 
 }
 
-// Function to Filter the List
 function filterContent(type) {
-    const indicator = document.getElementById('view-indicator');
-    indicator.innerText = `Current Feed: ${type === 'all' ? 'All' : type.toUpperCase()}`;
+    document.getElementById('view-indicator').innerText = `Feed: ${type.toUpperCase()}`;
     displayArchive(type);
 }
 
-// Function to Render to UI
 function displayArchive(filter = 'all') {
-    const displayList = document.getElementById('display-list');
-    const archive = JSON.parse(localStorage.getItem('sriram_v3_data')) || [];
+    const list = document.getElementById('display-list');
+    const archive = JSON.parse(localStorage.getItem('sriram_media_db')) || [];
 
-    const filtered = filter === 'all' 
-        ? archive 
-        : archive.filter(item => item.category === filter);
+    const filtered = archive.filter(item => {
+        if (filter === 'all') return true;
+        if (filter === 'image') return item.image;
+        if (filter === 'video') return item.video;
+        return item.category === filter;
+    });
 
-    if (filtered.length === 0) {
-        displayList.innerHTML = `<p style="text-align:center; color:#666;">No posts in this category yet.</p>`;
-        return;
-    }
-
-    displayList.innerHTML = filtered.map(item => `
+    list.innerHTML = filtered.map(item => `
         <div class="post-card ${item.category}">
             <span class="tag">${item.category}</span>
-            <small style="float:right; color:#777;">${item.date}</small>
             <h3>${item.title}</h3>
-            <p>${item.content.replace(/\n/g, '<br>')}</p>
-            <button onclick="deletePost(${item.id})" style="background:none; border:none; color:#e50914; cursor:pointer; font-size:11px; padding:0;">[Delete Post]</button>
+            ${item.image ? `<img src="${item.image}" style="width:100%; border-radius:8px; margin:10px 0;">` : ''}
+            ${item.video ? `<iframe width="100%" height="200" src="https://www.youtube.com/embed/${item.video}" frameborder="0" allowfullscreen></iframe>` : ''}
+            <p>${item.content}</p>
+            <button onclick="deletePost(${item.id})" style="color:red; background:none; border:none; cursor:pointer;">[Delete]</button>
         </div>
     `).reverse().join('');
 }
 
 function deletePost(id) {
-    if(confirm("Are you sure you want to remove this?")){
-        let archive = JSON.parse(localStorage.getItem('sriram_v3_data')) || [];
-        archive = archive.filter(item => item.id !== id);
-        localStorage.setItem('sriram_v3_data', JSON.stringify(archive));
-        displayArchive();
-    }
+    let archive = JSON.parse(localStorage.getItem('sriram_media_db')) || [];
+    archive = archive.filter(item => item.id !== id);
+    localStorage.setItem('sriram_media_db', JSON.stringify(archive));
+    displayArchive();
 }
 
-// Initial Load
 window.onload = () => displayArchive('all');
