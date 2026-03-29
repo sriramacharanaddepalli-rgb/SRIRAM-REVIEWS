@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sriram Reviews | Director's Portal</title>
+    <title>Sriram Reviews | Cinema Archive</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,26 +19,22 @@
         <main class="container">
             <section id="media-hub">
                 <div class="media-section">
-                    <h2>🎬 Video Gallery</h2>
-                    <div id="video-grid" class="grid"></div>
-                </div>
-                <div class="media-section">
-                    <h2>📸 Image Gallery</h2>
+                    <h2>📸 Poster & Image Gallery</h2>
                     <div id="image-grid" class="grid"></div>
                 </div>
             </section>
 
             <section class="admin-panel">
                 <h3>Creator Studio</h3>
-                <input type="text" id="title" placeholder="Title">
+                <input type="text" id="title" placeholder="Post Title (e.g. Vihanga Update)">
                 <select id="category">
-                    <option value="review">Review</option>
-                    <option value="news">News</option>
+                    <option value="review">Movie Review</option>
+                    <option value="news">Cinema News</option>
                 </select>
+                <label for="img-input" style="font-size: 12px; color: #888;">Upload Image:</label>
                 <input type="file" id="img-input" accept="image/*">
-                <input type="text" id="vid-input" placeholder="YouTube Video ID">
-                <textarea id="content" placeholder="Story/Review content..."></textarea>
-                <button onclick="handlePublish()">Publish Now</button>
+                <textarea id="content" placeholder="Write your story or review here..."></textarea>
+                <button onclick="handlePublish()">Publish to Portfolio</button>
             </section>
         </main>
     </div>
@@ -52,6 +48,10 @@
             <div id="category-content"></div>
         </div>
     </div>
+
+    <footer style="text-align: center; padding: 20px; color: #444;">
+        <p>&copy; 2026 Sriram Reviews</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
